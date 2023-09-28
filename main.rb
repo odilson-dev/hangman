@@ -1,4 +1,5 @@
 require 'open-uri'
+require 'colorize'
 
 
 url = URI.open('https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-no-swears.txt')
@@ -7,6 +8,10 @@ def find_secret_word(dictionnary)
     dictionnary.readlines.map{ |word| word.chomp("\n") if (5..12).to_a.include? word.chomp("\n").length }.compact.sample
  end
 
+def letter?(lookAhead)
+    lookAhead.match?(/[[:alpha:]]/)
+end
+
 dirname = "dictionnary"
 Dir.mkdir(dirname) unless File.exist? dirname
 
@@ -14,9 +19,43 @@ File.open("#{dirname}/dictionnary.txt", 'w'){ |f| f.write(url.read) }
 
 
 dictionnary = File.open("#{dirname}/dictionnary.txt")
+secret_word = "condition"
+
+guess_renmaining = 15
+wrong_letters = []
+word_guessed = Array.new(secret_word.length, "_")
+
+guess_renmaining.times do
+    guess_renmaining -= 1
+    puts "Guess remaining: #{guess_renmaining}" + " Incorrect letters: #{wrong_letters.join(" ")}"
+    puts word_guessed.join(" ")
+    puts "Enter a letter"
+    answer = gets.chomp.downcase
+    puts "\n"
+    if answer == "save"
+        puts "Save my position"
+        break
+    elsif answer.length != 1 or !letter? answer
+        puts "wrong input".red
+        redo
+    elsif wrong_letters.include? answer
+        puts "This letter has already been choosen".red
+        redo 
+    else
+        if secret_word.include? answer
+            secret_word.split("").each_with_index { |value, index| word_guessed[index] = value if value == answer }
+            if word_guessed.count("_") == 0
+                puts "You win the game".green
+                break
+            end
+        else
+            wrong_letters << answer
+        end
+    end
+end
 
 
 
-p find_secret_word(dictionnary)
+# p find_secret_word(dictionnary)
 dictionnary.close
 
