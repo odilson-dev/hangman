@@ -1,73 +1,42 @@
-require 'open-uri'
-require 'colorize'
-require 'json'
+require_relative "lib/game"
+require 'yaml'
 
-url = URI.open('https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-no-swears.txt')
-
-def find_@secret_word(dictionnary)
-    dictionnary.readlines.map{ |word| word.chomp("\n") if (5..12).to_a.include? word.chomp("\n").length }.compact.sample
- end
-
-def letter?(lookAhead)
-    lookAhead.match?(/[[:alpha:]]/)
-end
-
-dirname = "dictionnary"
-Dir.mkdir(dirname) unless File.exist? dirname
-
-File.open("#{dirname}/dictionnary.txt", 'w'){ |f| f.write(url.read) } 
-
-data = "Data"
-Dir.mkdir(data) unless File.exist? data
-
-
-dictionnary = File.open("#{dirname}/dictionnary.txt")
-class Game
-    def initialize
-    @secret_word = "condition"
-
-    @guess_renmaining = 15
-    @wrong_letters = []
-    @word_guessed = Array.new(@secret_word.length, "_")
-
-    def play
-        @guess_renmaining.times do
-            @guess_renmaining -= 1
-            puts "Guess remaining: #{@guess_renmaining}" + " Incorrect letters: #{@wrong_letters.join(" ")}"
-            puts @word_guessed.join(" ")
-            puts "Enter a letter"
-            answer = gets.chomp.downcase
-            puts "\n"
-            if answer == "save"
-                puts "Enter a name to save your progress"
-                @name = gets.chomp
-                serialized_player = JSON.dump(self)
-                file = open("#{@name}.json", "w")
-                file.write serialized_player
-                puts "Your progress has been saved"
-                break
-            elsif answer.length != 1 or !letter? answer
-                puts "wrong input".red
-                redo
-            elsif @wrong_letters.include? answer
-                puts "This letter has already been choosen".red
-                redo 
+game = Game.new()
+save = false
+while true
+    puts "Would you like to: 1) Start a new game
+                            2) Load a game"
+    answer = gets.chomp
+    if answer == "1"
+        save = game.play
+        if save
+            puts "Enter a name to save your progress"
+            name = gets.chomp
+            if File.exist? "Data/#{name}.txt"
+                puts "This name already exist in our database"
             else
-                if @secret_word.include? answer
-                    @secret_word.split("").each_with_index { |value, index| @word_guessed[index] = value if value == answer }
-                    if @word_guessed.count("_") == 0
-                        puts "You win the game".green
-                        break
-                    end
-                else
-                    @wrong_letters << answer
-                end
+                file = open("Data/#{name}.txt", 'w')
+                file.write Marshal.dump(game)
+                file.close
             end
+            puts "Your progress has been saved"
         end
-    
-        dictionnary.close
-    end
+    elsif answer == "2"
+        puts "What is the name you saved?"
+        name = gets.chomp
 
-    
+        if File.exist? "Data/#{name}.txt" 
+            file = open("Data/#{name}.txt", 'r')
+            loaded_game = Marshal.load(file.read)
+            loaded_game.play
+        else
+            puts "This name doesn't exist"
+        end
+
+    end
+    puts "Do you want to play the game again?[y/n]"
+    if gets.chomp == "n"
+        break
+    end
 end
 
