@@ -31,6 +31,8 @@ while true
     end
     puts "Do you want to play the game again?[y/n]"
     if gets.chomp == "n"
+        puts "Thanks for playing! Here is my GitHub: odilsonjs"
+        puts "Ciao !"
         break
     end
 end
