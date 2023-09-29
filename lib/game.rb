@@ -25,7 +25,7 @@ dictionnary = File.open("#{dirname}/dictionnary.txt")
 class Game
     def initialize
         @secret_word = "condition"
-        @guess_renmaining = 15
+        @guess_renmaining = 10
         @wrong_letters = []
         @word_guessed = Array.new(@secret_word.length, "_")
     end
@@ -33,34 +33,40 @@ class Game
     
 
     def play
-        @guess_renmaining.times do
+        10.times do
             @guess_renmaining -= 1
-            puts "Guess remaining: #{@guess_renmaining}" + " Incorrect letters: #{@wrong_letters.join(" ")}"
-            puts @word_guessed.join(" ")
+            puts "Guess remaining: #{@guess_renmaining}".light_cyan + " Incorrect letters: #{@wrong_letters.join(" ")}".light_magenta
+            puts @word_guessed.join(" ").light_cyan
             puts "Enter a letter"
             answer = gets.chomp.downcase
             puts "\n"
             if answer == "save"
-                return true
+                return "save"
             elsif answer.length != 1 or !letter? answer
-                puts "wrong input".red
+                puts "Wrong input".red
+                @guess_renmaining += 1
                 redo
             elsif @wrong_letters.include? answer
-                puts "This letter has already been choosen".red
-                redo 
+                puts "This letter has already been choosen".light_blue
+                next 
             else
                 if @secret_word.include? answer
+                    puts "Correct !".light_green
                     @secret_word.split("").each_with_index { |value, index| @word_guessed[index] = value if value == answer }
                     if @word_guessed.count("_") == 0
-                        puts "You win the game".green
+                        puts "You win the game".light_green
                         break
                     end
                 else
+                    puts "Incorrect !".light_red
                     @wrong_letters << answer
                 end
             end
         end
-    
+        if @word_guessed.count("_") != 0
+            puts "You lose !".light_red
+            puts "The word was : " + @secret_word.light_cyan
+        end
         
     end
 
