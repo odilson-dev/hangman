@@ -7,7 +7,7 @@ end
 
 while true
     puts "Would you like to: 1) Start a new game
-                             2) Load a game"
+                   2) Load a game"
     answer = gets.chomp
     if answer == "1"
         game = Game.new()

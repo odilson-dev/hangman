@@ -1,0 +1,2 @@
+o:	Game	:@secret_wordI"impose:ET:@guess_renmainingi
+:@wrong_letters[I"k;TI"f;TI"q;T:@word_guessed[I"_;T@@I"o;TI"s;T@
