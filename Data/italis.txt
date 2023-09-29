@@ -1,1 +1,0 @@
-o:	Game	:@secret_wordI"serving:ET:@guess_renmainingi	:@wrong_letters[	I"d;TI"j;TI"o;TI"a;T:@word_guessed[I"s;TI"_;T@@I"i;T@@

@@ -60,7 +60,6 @@ class Game
                 return
             elsif answer.length != 1 or !letter? answer
                 puts "Wrong input".red
-                @guess_renmaining += 1
                 redo
             elsif @wrong_letters.include? answer
                 puts "This letter has already been choosen".light_blue

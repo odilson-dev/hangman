@@ -1,5 +1,9 @@
 require_relative "lib/game"
 require 'colorize'
+def show_saved_names
+    data_directory = Dir.glob("Data/*.txt")
+    data_directory.each { |path| puts File.basename(path).chomp(".txt") }
+end
 
 while true
     puts "Would you like to: 1) Start a new game
@@ -10,6 +14,7 @@ while true
         game.play
     elsif answer == "2"
         puts "What is the name you saved?"
+        show_saved_names
         name = gets.chomp
 
         if File.exist? "Data/#{name}.txt"
