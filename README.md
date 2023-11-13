@@ -1,5 +1,5 @@
 # Hangman Game
-I built a simple command line Hangman game where one player plays against the computer, the player is able to save his progression and keep playing  later at exactly where he left off.
+A simple command line Hangman game where one player plays against the computer, the player is able to save his progression and keep playing  later at exactly where he left off.
 
 # Wikipedia
 https://en.wikipedia.org/wiki/Hangman_(game)
