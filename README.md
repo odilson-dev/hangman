@@ -8,7 +8,7 @@ https://en.wikipedia.org/wiki/Hangman_(game)
 https://replit.com/@odilsonjs/Hangman-Project?v=1
 
 # GitHub Repository
-https://github.com/odilsonjs/Hangman
+https://github.com/odilson-dev/Hangman
 
 # Course Link
 https://www.theodinproject.com/lessons/ruby-hangman
